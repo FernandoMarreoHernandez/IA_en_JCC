@@ -1,0 +1,15 @@
+{
+  "ExpandedNodes": [
+    "",
+    "\\game",
+    "\\game\\src",
+    "\\game\\src\\main",
+    "\\game\\src\\main\\java",
+    "\\game\\src\\main\\java\\net",
+    "\\game\\src\\main\\java\\net\\demilich",
+    "\\game\\src\\main\\java\\net\\demilich\\metastone",
+    "\\game\\src\\main\\java\\net\\demilich\\metastone\\game"
+  ],
+  "SelectedNode": "\\game\\build.gradle",
+  "PreviewInSolutionExplorer": false
+}
