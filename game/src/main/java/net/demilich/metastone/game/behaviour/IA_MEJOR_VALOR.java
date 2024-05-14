@@ -13,18 +13,18 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
 
-public class prueba_ia extends Behaviour {
-    private final static Logger logger = LoggerFactory.getLogger(prueba_ia.class);
+public class IA_MEJOR_VALOR extends Behaviour {
+    private final static Logger logger = LoggerFactory.getLogger(IA_MEJOR_VALOR.class);
 
     private final IGameStateHeuristic heuristic;
 
-    public prueba_ia(IGameStateHeuristic heuristic) {
+    public IA_MEJOR_VALOR(IGameStateHeuristic heuristic) {
         this.heuristic = heuristic;
     }
 
     @Override
     public String getName() {
-        return "IA";
+        return "IA_MEJOR_VALOR";
     }
 
 
@@ -41,22 +41,22 @@ public class prueba_ia extends Behaviour {
 
     @Override
     public GameAction requestAction(GameContext context, Player player, List<GameAction> validActions) {
-        AccionesTurno.setIdsCartasTurno(validActions); //metodo para el vector de los ids de las cartas usables en el turno
+        AccionesTurnoMejorValor.setIdsCartasTurno(validActions); //metodo para el vector de los ids de las cartas usables en el turno
 
         if (validActions.size() == 1) {
-            AccionesPartida.obtenerMejorValorColumna(AccionesTurno.matrizTurno, AccionesTurno.idCartasTurno);
+            AccionesPartidaMejorValor.obtenerMejorValorColumna(AccionesTurnoMejorValor.matrizTurno, AccionesTurnoMejorValor.idCartasTurno);
             return validActions.get(0);
         }
         GameAction bestAction = validActions.get(0);
         double bestScore = -999.0;
         for (GameAction gameAction : validActions) {
             GameContext simulationResult = simulateAction(context.clone(), player, gameAction);
-            int id = AccionesTurno.ObtenerIDCarta(gameAction);
+            int id = AccionesTurnoMejorValor.ObtenerIDCarta(gameAction);
             if (id != 67 && id != 36 && id != 4 && id != 0 && Objects.equals(gameAction.getActionType().toString(), "PHYSICAL_ATTACK")) {
-                id = AccionesTurno.transformarId(id);
+                id = AccionesTurnoMejorValor.transformarId(id);
             }
             double gameStateScore = heuristic.getScoreId(simulationResult, player.getId(),id);
-            AccionesTurno.guardarValorCarta(gameAction, gameStateScore, validActions);
+            AccionesTurnoMejorValor.guardarValorCarta(gameAction, gameStateScore, validActions);
             if (gameStateScore > bestScore) {
                 bestScore = gameStateScore;
                 bestAction = gameAction;
@@ -66,13 +66,13 @@ public class prueba_ia extends Behaviour {
 
         }
         if (bestAction.toString().contains("SUMMON")) {
-            AccionesTurno.CambiarIdCarta(bestAction, IDNuevoEsbirro.getIdNuevoEsbirro());
+            AccionesTurnoMejorValor.CambiarIdCarta(bestAction, IDNuevoEsbirro.getIdNuevoEsbirro());
         }
-        AccionesTurno.sumarNumeroAcciones(); //metodo para sumar 1 al numero de acciones para la siguiente acción
+        AccionesTurnoMejorValor.sumarNumeroAcciones(); //metodo para sumar 1 al numero de acciones para la siguiente acción
 
         //ENTRA EN EL IF SI LA MEJOR ACCION ES END_TURN
         if (bestAction.toString().contains("END_TURN")) {
-            AccionesPartida.obtenerMejorValorColumna(AccionesTurno.matrizTurno, AccionesTurno.idCartasTurno);
+            AccionesPartidaMejorValor.obtenerMejorValorColumna(AccionesTurnoMejorValor.matrizTurno, AccionesTurnoMejorValor.idCartasTurno);
             //AccionesPartida.mostrarTablaPartida();
         }
         return bestAction;

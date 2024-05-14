@@ -45,13 +45,54 @@ public class AdministradorJson {
         }
     }
 
-    public static void calculosFinales(Double[][] matrizFinal, ArrayList<Integer> idCartasTurno ) {
+    public static void calculosFinalesMejorValor(Double[][] matrizFinal, ArrayList<Integer> idCartasTurno ) {
         AdministradorJson administradorJson = new AdministradorJson();
         // Cargar los datos desde el archivo
-        DatosGuardados datosGuardados = administradorJson.cargarDatos("game\\src\\main\\java\\net\\demilich\\metastone\\game\\FicherosJson\\MediaCartasGuerreroControl.json");
+        DatosGuardados datosGuardados = administradorJson.cargarDatos("game\\src\\main\\java\\net\\demilich\\metastone\\game\\FicherosJson\\MediaCartasGuerreroControlMejorValor.json");
         List<Integer> mejoresValores = new ArrayList<>();
-        List<Integer> valoresActuales = cargarDatos("game\\src\\main\\java\\net\\demilich\\metastone\\game\\FicherosJson\\MediaCartasGuerreroControl.json").getNumeros();
-        int numeroPartidas = cargarDatos("game\\src\\main\\java\\net\\demilich\\metastone\\game\\FicherosJson\\MediaCartasGuerreroControl.json").getNumeroSeparado();
+        List<Integer> valoresActuales = cargarDatos("game\\src\\main\\java\\net\\demilich\\metastone\\game\\FicherosJson\\MediaCartasGuerreroControlMejorValor.json").getNumeros();
+        int numeroPartidas = cargarDatos("game\\src\\main\\java\\net\\demilich\\metastone\\game\\FicherosJson\\MediaCartasGuerreroControlMejorValor.json").getNumeroSeparado();
+        //recorremos la matriz de turno columna por columna
+        for (int i = 0; i < idCartasTurno.size(); i++) {
+            int valorNoNulo = -999999999;
+            for (int j = 0; j < 20; j++) {
+                //si la matriz de turno en la columna i y fila j no es nula
+                if (matrizFinal[j][i] != null &&
+                            matrizFinal[j][i] != Float.NEGATIVE_INFINITY &&
+                            matrizFinal[j][i] != Float.POSITIVE_INFINITY ) {
+                    if (matrizFinal[j][i] > valorNoNulo) {
+                        //el mejor valor sera el valor de la matriz de turno en la columna i y fila j
+                        valorNoNulo = matrizFinal[j][i].intValue();
+                    }
+                }
+            }
+            int SumaNueva;
+            int NuevoPromedio;
+            if (valorNoNulo == -999999999) {
+                NuevoPromedio = valoresActuales.get(i);
+            }
+            else {
+                int SumaActual = valoresActuales.get(i) * numeroPartidas;
+                SumaNueva = valorNoNulo + SumaActual;
+                NuevoPromedio = SumaNueva / (numeroPartidas + 1);
+            }
+            //imprime valores actuales
+            System.out.println("El valor actual de la carta " + idCartasTurno.get(i) + " es: " + valoresActuales.get(i));
+            mejoresValores.add(NuevoPromedio);
+        }
+        datosGuardados.setValoresCartas(mejoresValores);
+        datosGuardados.setNumeroPartida(numeroPartidas + 1);
+
+        // Guardar los datos actualizados
+        administradorJson.guardarDatos(mejoresValores, numeroPartidas + 1, "game\\src\\main\\java\\net\\demilich\\metastone\\game\\FicherosJson\\MediaCartasGuerreroControlMejorValor.json");
+    }
+    public static void calculosFinalesMedia(Double[][] matrizFinal, ArrayList<Integer> idCartasTurno ) {
+        AdministradorJson administradorJson = new AdministradorJson();
+        // Cargar los datos desde el archivo
+        DatosGuardados datosGuardados = administradorJson.cargarDatos("game\\src\\main\\java\\net\\demilich\\metastone\\game\\FicherosJson\\MediaCartasGuerreroControlMedia.json");
+        List<Integer> mejoresValores = new ArrayList<>();
+        List<Integer> valoresActuales = cargarDatos("game\\src\\main\\java\\net\\demilich\\metastone\\game\\FicherosJson\\MediaCartasGuerreroControlMedia.json").getNumeros();
+        int numeroPartidas = cargarDatos("game\\src\\main\\java\\net\\demilich\\metastone\\game\\FicherosJson\\MediaCartasGuerreroControlMedia.json").getNumeroSeparado();
         //recorremos la matriz de turno columna por columna
         for (int i = 0; i < idCartasTurno.size(); i++) {
             int valorNoNulo = -999999999;
@@ -60,8 +101,8 @@ public class AdministradorJson {
             for (int j = 0; j < 20; j++) {
                 //si la matriz de turno en la columna i y fila j no es nula
                 if (matrizFinal[j][i] != null &&
-                            matrizFinal[j][i] != Float.NEGATIVE_INFINITY &&
-                            matrizFinal[j][i] != Float.POSITIVE_INFINITY ) {
+                        matrizFinal[j][i] != Float.NEGATIVE_INFINITY &&
+                        matrizFinal[j][i] != Float.POSITIVE_INFINITY ) {
                     //el mejor valor sera el valor de la matriz de turno en la columna i y fila j
                     valorNoNulo = matrizFinal[j][i].intValue();
                     valorMedio += matrizFinal[j][i].intValue();
@@ -88,11 +129,15 @@ public class AdministradorJson {
         datosGuardados.setNumeroPartida(numeroPartidas + 1);
 
         // Guardar los datos actualizados
-        administradorJson.guardarDatos(mejoresValores, numeroPartidas + 1, "game\\src\\main\\java\\net\\demilich\\metastone\\game\\FicherosJson\\MediaCartasGuerreroControl.json");
+        administradorJson.guardarDatos(mejoresValores, numeroPartidas + 1, "game\\src\\main\\java\\net\\demilich\\metastone\\game\\FicherosJson\\MediaCartasGuerreroControlMedia.json");
     }
 
-    public static int ObtenerUnValor(int idCarta) {
-        List<Integer> valores = cargarDatos("game\\src\\main\\java\\net\\demilich\\metastone\\game\\FicherosJson\\MediaCartasGuerreroControl.json").getNumeros();
+    public static int ObtenerUnValorMejorValor(int idCarta) {
+        List<Integer> valores = cargarDatos("game\\src\\main\\java\\net\\demilich\\metastone\\game\\FicherosJson\\MediaCartasGuerreroControlMejorValor.json").getNumeros();
+        return valores.get(idCarta-5);
+    }
+    public static int ObtenerUnValorMedia(int idCarta) {
+        List<Integer> valores = cargarDatos("game\\src\\main\\java\\net\\demilich\\metastone\\game\\FicherosJson\\MediaCartasGuerreroControlMedia.json").getNumeros();
         return valores.get(idCarta-5);
     }
 

@@ -2,8 +2,6 @@ package net.demilich.metastone.tests;
 
 import net.demilich.metastone.game.GameContext;
 import net.demilich.metastone.game.Player;
-import net.demilich.metastone.game.behaviour.AccionesPartida;
-import net.demilich.metastone.game.behaviour.AccionesTurno;
 import net.demilich.metastone.game.decks.DeckFormat;
 import net.demilich.metastone.game.logic.GameLogic;
 

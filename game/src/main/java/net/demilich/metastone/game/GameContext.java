@@ -2,8 +2,10 @@ package net.demilich.metastone.game;
 
 import net.demilich.metastone.game.actions.ActionType;
 import net.demilich.metastone.game.actions.GameAction;
-import net.demilich.metastone.game.behaviour.AccionesPartida;
-import net.demilich.metastone.game.behaviour.AccionesTurno;
+import net.demilich.metastone.game.behaviour.AccionesPartidaMedia;
+import net.demilich.metastone.game.behaviour.AccionesPartidaMejorValor;
+import net.demilich.metastone.game.behaviour.AccionesTurnoMedia;
+import net.demilich.metastone.game.behaviour.AccionesTurnoMejorValor;
 import net.demilich.metastone.game.cards.Card;
 import net.demilich.metastone.game.cards.CardCatalogue;
 import net.demilich.metastone.game.cards.CardCollection;
@@ -134,8 +136,11 @@ public class GameContext implements Cloneable, IDisposable {
 	private void endGame() {
 		winner = logic.getWinner(getActivePlayer(), getOpponent(getActivePlayer()));
 		//comprueba si el algoritmo usado es PruebaIA
-		if (getActivePlayer().getBehaviour().getName().equals("IA") || getOpponent(getActivePlayer()).getBehaviour().getName().equals("IA")){
-			AdministradorJson.calculosFinales(AccionesPartida.matrizPartida, AccionesPartida.idCartasPartida);
+		if (getActivePlayer().getBehaviour().getName().equals("IA_MEDIA") || getOpponent(getActivePlayer()).getBehaviour().getName().equals("IA_MEDIA")){
+			AdministradorJson.calculosFinalesMedia(AccionesPartidaMedia.matrizPartida, AccionesPartidaMedia.idCartasPartida);
+		}
+		if (getActivePlayer().getBehaviour().getName().equals("IA_MEJOR_VALOR") || getOpponent(getActivePlayer()).getBehaviour().getName().equals("IA_MEJOR_VALOR")){
+			AdministradorJson.calculosFinalesMejorValor(AccionesPartidaMejorValor.matrizPartida, AccionesPartidaMejorValor.idCartasPartida);
 		}
 		for (Player player : getPlayers()) {
 			player.getBehaviour().onGameOver(this, player.getId(), winner != null ? winner.getId() : -1);
@@ -491,11 +496,7 @@ public class GameContext implements Cloneable, IDisposable {
 		}
 
 		List<GameAction> validActions = getValidActions();
-		//AccionesTurno.imprimirIdsCartasTurno();
 
-		if (getActivePlayer().getBehaviour().getName().equals("Prueba IA") || getActivePlayer().getBehaviour().getName().equals("Sujeto")) {
-			AccionesTurno.setIdsCartasTurno(validActions);
-		}
 		if (validActions.size() == 0) {
 			//endTurn();
 			return false;
@@ -581,7 +582,8 @@ public class GameContext implements Cloneable, IDisposable {
 
 	protected void startTurn(int playerId) {//AQUI ESTA LLEGANDO
 		turn++;
-		AccionesTurno.vaciarIdsNumeroAccionesYTabla();
+		AccionesTurnoMedia.vaciarIdsNumeroAccionesYTabla();
+		AccionesTurnoMejorValor.vaciarIdsNumeroAccionesYTabla();
 		logic.startTurn(playerId);
 		onGameStateChanged();
 		actionsThisTurn = 0;

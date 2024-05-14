@@ -13,7 +13,8 @@ import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.VBox;
 import net.demilich.metastone.game.behaviour.*;
-import net.demilich.metastone.game.behaviour.heuristic.Algoritmo_Control;
+import net.demilich.metastone.game.behaviour.heuristic.AlgoritmoControlMedia;
+import net.demilich.metastone.game.behaviour.heuristic.AlgoritmoControlMejorValor;
 import net.demilich.metastone.game.behaviour.heuristic.WeightedHeuristic;
 import net.demilich.metastone.game.behaviour.human.HumanBehaviour;
 import net.demilich.metastone.game.behaviour.threat.GameStateValueBehaviour;
@@ -153,7 +154,8 @@ public class PlayerConfigView extends VBox {
 
 	public void setupBehaviours() {
 		ObservableList<IBehaviour> behaviourList = FXCollections.observableArrayList();
-		behaviourList.add(new prueba_ia(new Algoritmo_Control())); //cambiar el algoritmo de la clase para los calculos de la mejor opcion
+		behaviourList.add(new IA_MEDIA(new AlgoritmoControlMedia())); //cambiar el algoritmo de la clase para los calculos de la mejor opcion
+		behaviourList.add(new IA_MEJOR_VALOR(new AlgoritmoControlMejorValor()));
 		if (selectionHint == PlayerConfigType.HUMAN || selectionHint == PlayerConfigType.SANDBOX) {
 			behaviourList.add(new HumanBehaviour());
 		}

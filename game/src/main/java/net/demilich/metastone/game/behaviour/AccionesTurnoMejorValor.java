@@ -7,7 +7,7 @@ import java.util.List;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
-public class AccionesTurno {
+public class AccionesTurnoMejorValor {
     public static ArrayList<Integer> idCartasTurno = new ArrayList<Integer>();
     public static Double[][] matrizTurno = new Double[20][20];
     public static int NumeroAcciones = 0;
@@ -64,7 +64,7 @@ public class AccionesTurno {
     public static void vaciarSeguimientoEsbirros(){
         for (int i = 0; i < 2; i++) {
             for (int j = 0; j < 20; j++) {
-                AccionesPartida.SeguimientoEsbirros[i][j] = 0;
+                AccionesPartidaMejorValor.SeguimientoEsbirros[i][j] = 0;
             }
         }
     }
@@ -111,8 +111,6 @@ public class AccionesTurno {
                 }
             }
             else{
-                AccionesTurno.idCartasTurno = AccionesTurno.idCartasTurno;
-                validActions = validActions;
                 System.out.println("ESTO NO DEBERIA DE PASAR");
             }
         }
@@ -145,14 +143,14 @@ public class AccionesTurno {
             int posicion = idCartasTurno.indexOf(cardId);
             //recorre SeguimientoEsbirros y para cuando encuetre uno que no sea 0
             for (int i = 0; i < 20; i++) {
-                if (AccionesPartida.SeguimientoEsbirros[0][i] == 0){
-                    AccionesPartida.SeguimientoEsbirros[0][i] = cardId;
+                if (AccionesPartidaMejorValor.SeguimientoEsbirros[0][i] == 0){
+                    AccionesPartidaMejorValor.SeguimientoEsbirros[0][i] = cardId;
                     ubicacion = i;
                     break;
                 }
             }
             idCartasTurno.set(posicion, idNuevo);
-            AccionesPartida.SeguimientoEsbirros[1][ubicacion] = idNuevo;
+            AccionesPartidaMejorValor.SeguimientoEsbirros[1][ubicacion] = idNuevo;
 
         }
     }
@@ -178,9 +176,9 @@ public class AccionesTurno {
         if (id >= 68) {
             for (int k = 0; k < 20; k++) {
                 //si el id de la carta en la posicion j de idCartasPartida es igual al id de la carta en la posicion k de SeguimientoEsbirros
-                if (id == AccionesPartida.SeguimientoEsbirros[1][k]) {
+                if (id == AccionesPartidaMejorValor.SeguimientoEsbirros[1][k]) {
                     //si el valor de la matriz de turno en la columna i y fila j es igual al mejor valor
-                    id = AccionesPartida.SeguimientoEsbirros[0][k];
+                    id = AccionesPartidaMejorValor.SeguimientoEsbirros[0][k];
                 }
             }
         }

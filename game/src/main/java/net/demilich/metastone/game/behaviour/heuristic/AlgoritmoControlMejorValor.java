@@ -6,7 +6,7 @@ import net.demilich.metastone.game.GameContext;
 import net.demilich.metastone.game.Player;
 import net.demilich.metastone.game.entities.minions.Minion;
 
-public class Algoritmo_Control implements IGameStateHeuristic {
+public class AlgoritmoControlMejorValor implements IGameStateHeuristic {
 
     private double calculateFriendlyMinionScore(Minion minion) {
         double minionScore = minion.getAttack() + minion.getHp();
@@ -76,7 +76,7 @@ public class Algoritmo_Control implements IGameStateHeuristic {
     public double getScoreId(GameContext context, int playerId, int cardId) {
         double score = 0;
         if (cardId < 35 && cardId != 4 && cardId != 0) {
-           score = score + (AdministradorJson.ObtenerUnValor(cardId) * 0.2);
+           score = score + (AdministradorJson.ObtenerUnValorMejorValor(cardId) * 0.2);
         }
         Player player = context.getPlayer(playerId);
         Player opponent = context.getOpponent(player);

@@ -2,7 +2,7 @@ package net.demilich.metastone.game.behaviour;
 
 import java.util.ArrayList;
 
-public class AccionesPartida {
+public class AccionesPartidaMedia{
     public static ArrayList<Integer> idCartasPartida = new ArrayList<Integer>(){{
         add(5);
         add(6);
@@ -59,15 +59,16 @@ public class AccionesPartida {
                     }
                 }
             }
-            //buscamos el id de la carta
-            int id = transformarId(idCartasTurno, i);
-            //buscamos el id idCartasPartida y guardamos la posicion en la que se encuentra
-            for (int k = 0; k < idCartasPartida.size(); k++) {
-                if (id == idCartasPartida.get(k)) {
-                    matrizPartida[Turnos][k] = mejorValor;
+            if (mejorValor != -9999) {
+                //buscamos el id de la carta
+                int id = transformarId(idCartasTurno, i);
+                //buscamos el id idCartasPartida y guardamos la posicion en la que se encuentra
+                for (int k = 0; k < idCartasPartida.size(); k++) {
+                    if (id == idCartasPartida.get(k)) {
+                        matrizPartida[Turnos][k] = mejorValor;
+                    }
                 }
             }
-
         }
         Turnos++;
     }

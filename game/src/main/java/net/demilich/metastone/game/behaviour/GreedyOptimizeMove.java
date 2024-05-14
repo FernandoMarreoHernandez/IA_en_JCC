@@ -41,7 +41,7 @@ public class GreedyOptimizeMove extends Behaviour {
 	public GameAction requestAction(GameContext context, Player player, List<GameAction> validActions) {
 		//AccionesTurno.setIdsCartasTurno(validActions); //metodo para el vector de los ids de las cartas usables en el turno
 		if (validActions.size() == 1) {
-			AccionesPartida.obtenerMejorValorColumna(AccionesTurno.matrizTurno, AccionesTurno.idCartasTurno);
+			AccionesPartidaMedia.obtenerMejorValorColumna(AccionesTurnoMedia.matrizTurno, AccionesTurnoMedia.idCartasTurno);
 			return validActions.get(0);
 		}
 		GameAction bestAction = validActions.get(0);
@@ -49,7 +49,7 @@ public class GreedyOptimizeMove extends Behaviour {
 		for (GameAction gameAction : validActions) {
 			GameContext simulationResult = simulateAction(context.clone(), player, gameAction);
 			double gameStateScore = heuristic.getScore(simulationResult, player.getId());
-			AccionesTurno.guardarValorCarta(gameAction, gameStateScore, validActions);
+			AccionesTurnoMedia.guardarValorCarta(gameAction, gameStateScore, validActions);
 			if (gameStateScore > bestScore) {
 				bestScore = gameStateScore;
 				bestAction = gameAction;
@@ -59,13 +59,13 @@ public class GreedyOptimizeMove extends Behaviour {
 
 		}
 		if (bestAction.toString().contains("SUMMON")) {
-			AccionesTurno.CambiarIdCarta(bestAction, IDNuevoEsbirro.getIdNuevoEsbirro());
+			AccionesTurnoMedia.CambiarIdCarta(bestAction, IDNuevoEsbirro.getIdNuevoEsbirro());
 		}
-		AccionesTurno.sumarNumeroAcciones(); //metodo para sumar 1 al numero de acciones para la siguiente acción
+		AccionesTurnoMedia.sumarNumeroAcciones(); //metodo para sumar 1 al numero de acciones para la siguiente acción
 
 		//ENTRA EN EL IF SI LA MEJOR ACCION ES END_TURN
 		if (bestAction.toString().contains("END_TURN")) {
-			AccionesPartida.obtenerMejorValorColumna(AccionesTurno.matrizTurno, AccionesTurno.idCartasTurno);
+			AccionesPartidaMedia.obtenerMejorValorColumna(AccionesTurnoMedia.matrizTurno, AccionesTurnoMedia.idCartasTurno);
 			//AccionesPartida.mostrarTablaPartida();
 		}
 		return bestAction;
