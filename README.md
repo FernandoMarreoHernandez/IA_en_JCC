@@ -1,4 +1,5 @@
-#Información#
+# Información #
+
 Este codigo esta usando el simulador MetaStone y se han añadidos y modificados distintos ficheros para la elaboración de este TFG.
 Autor del TFG: Fernando Marrero Hernández
 
