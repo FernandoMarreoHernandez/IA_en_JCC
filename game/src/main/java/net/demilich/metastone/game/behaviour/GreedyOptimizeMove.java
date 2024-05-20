@@ -41,7 +41,7 @@ public class GreedyOptimizeMove extends Behaviour {
 	public GameAction requestAction(GameContext context, Player player, List<GameAction> validActions) {
 		//AccionesTurno.setIdsCartasTurno(validActions); //metodo para el vector de los ids de las cartas usables en el turno
 		if (validActions.size() == 1) {
-			AccionesPartidaMedia.obtenerMejorValorColumna(AccionesTurnoMedia.matrizTurno, AccionesTurnoMedia.idCartasTurno);
+			AccionesPartidaMedia.obtenerMejorValorColumna(AccionesTurnoMedia.tablaTurno, AccionesTurnoMedia.idCartasTurno);
 			return validActions.get(0);
 		}
 		GameAction bestAction = validActions.get(0);
@@ -65,7 +65,7 @@ public class GreedyOptimizeMove extends Behaviour {
 
 		//ENTRA EN EL IF SI LA MEJOR ACCION ES END_TURN
 		if (bestAction.toString().contains("END_TURN")) {
-			AccionesPartidaMedia.obtenerMejorValorColumna(AccionesTurnoMedia.matrizTurno, AccionesTurnoMedia.idCartasTurno);
+			AccionesPartidaMedia.obtenerMejorValorColumna(AccionesTurnoMedia.tablaTurno, AccionesTurnoMedia.idCartasTurno);
 			//AccionesPartida.mostrarTablaPartida();
 		}
 		return bestAction;

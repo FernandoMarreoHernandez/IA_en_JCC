@@ -9,7 +9,7 @@ import java.util.regex.Pattern;
 
 public class AccionesTurnoMedia {
     public static ArrayList<Integer> idCartasTurno = new ArrayList<Integer>();
-    public static Double[][] matrizTurno = new Double[20][20];
+    public static Double[][] tablaTurno = new Double[20][20];
     public static int NumeroAcciones = 0;
     public static boolean nuevoObjetivo = false;
 
@@ -22,31 +22,17 @@ public class AccionesTurnoMedia {
     //metodo para el vector de los ids de las cartas usables en el turno, usa como parametro la lista de acciones validas
     //busca tanto por "cardId:(\\d+)]" como por "Attacker: [EntityReference id:(\\d+)]"
     public static void setIdsCartasTurno(List<GameAction> validActions) {
-        // Patrón para extraer el nombre de la carta entre "cardName:" y " cardLocation:"
-        Pattern pattern = Pattern.compile("cardId:(\\d+)]");
-        Pattern pattern1 = Pattern.compile("Attacker: \\[EntityReference id:(\\d+)]");
 
         for (GameAction gameAction : validActions) {
-
-            Matcher matcher = pattern.matcher(gameAction.toString());
-            Matcher matcher1 = pattern1.matcher(gameAction.toString());
-            if (matcher.find()) {
-                String cardIdStr = matcher.group(1);
-                int cardId = Integer.parseInt(cardIdStr);
-                if (!idCartasTurno.contains(cardId) && cardId != 0 && cardId != 4 && cardId != 36 && cardId != 67) {
-                    idCartasTurno.add(cardId);
-                }
-            } else if (matcher1.find()) {
-                String cardIdStr = matcher1.group(1);
-                int cardId = Integer.parseInt(cardIdStr);
-                if (!idCartasTurno.contains(cardId) && cardId != 0 && cardId != 4 && cardId != 36 && cardId != 67) {
-                    idCartasTurno.add(cardId);
-                }
+            int cardId = ObtenerIDCarta(gameAction);
+            if (!idCartasTurno.contains(cardId) && cardId != 0 && cardId != 4 && cardId != 36 && cardId != 67) {
+                idCartasTurno.add(cardId);
             }
+
         }
-        //if (validActions.size()-2 != AccionesTurno.idCartasTurno.size() && AccionesTurno.idCartasTurno.size() != 0) {
-            //System.out.println("ERROR: El tamaño de las acciones validas no coincide con el tamaño de las cartas del turno");
-        //}
+        if (idCartasTurno.isEmpty() && validActions.size() > 2){
+            System.out.println("ERROR");
+        }
     }
 
     //metodo para vaciar el vector de ids de las cartas del turno
@@ -55,7 +41,7 @@ public class AccionesTurnoMedia {
         NumeroAcciones = 0;
         for (int i = 0; i < 20; i++) {
             for (int j = 0; j < 20; j++) {
-                matrizTurno[i][j] = null;
+                tablaTurno[i][j] = null;
             }
         }
     }
@@ -99,15 +85,15 @@ public class AccionesTurnoMedia {
             if (posicion != -1) {
                 if (nuevoObjetivo) {
                     nuevoObjetivo = false;
-                    if (matrizTurno[NumeroAcciones][posicion] != null) {
-                        if (valor > matrizTurno[NumeroAcciones][posicion]) {
-                            matrizTurno[NumeroAcciones][posicion] = valor;
+                    if (tablaTurno[NumeroAcciones][posicion] != null) {
+                        if (valor > tablaTurno[NumeroAcciones][posicion]) {
+                            tablaTurno[NumeroAcciones][posicion] = valor;
                         }
                     } else {
-                        matrizTurno[NumeroAcciones][posicion] = valor;
+                        tablaTurno[NumeroAcciones][posicion] = valor;
                     }
                 } else {
-                    matrizTurno[NumeroAcciones][posicion] = valor;
+                    tablaTurno[NumeroAcciones][posicion] = valor;
                 }
             }
             else{
@@ -117,7 +103,7 @@ public class AccionesTurnoMedia {
     }
 
     //metodo que imprime la matriz de turnos
-    public static void imprimirMatrizTurno(){
+    public static void imprimirtablaTurno(){
         System.out.println("La matriz de turnos es: ");
         //muestra primero el vector de ids
         for (int j = 0; j < idCartasTurno.size(); j++) {
@@ -127,7 +113,7 @@ public class AccionesTurnoMedia {
         System.out.println("valores: ");
         for (int i = 0; i < 20; i++) {
             for (int j = 0; j < 20; j++) {
-                System.out.print(matrizTurno[i][j] + " ");
+                System.out.print(tablaTurno[i][j] + " ");
             }
             System.out.println();
         }

@@ -41,15 +41,14 @@ public class IA_MEJOR_VALOR extends Behaviour {
 
     @Override
     public GameAction requestAction(GameContext context, Player player, List<GameAction> validActions) {
-        AccionesTurnoMejorValor.setIdsCartasTurno(validActions); //metodo para el vector de los ids de las cartas usables en el turno
-
         if (validActions.size() == 1) {
-            AccionesPartidaMejorValor.obtenerMejorValorColumna(AccionesTurnoMejorValor.matrizTurno, AccionesTurnoMejorValor.idCartasTurno);
+            AccionesPartidaMejorValor.obtenerMejorValorColumna(AccionesTurnoMejorValor.tablaTurno, AccionesTurnoMejorValor.idCartasTurno);
             return validActions.get(0);
         }
         GameAction bestAction = validActions.get(0);
         double bestScore = -999.0;
         for (GameAction gameAction : validActions) {
+            AccionesTurnoMejorValor.setIdsCartasTurno(validActions); //metodo para el vector de los ids de las cartas usables en el turno
             GameContext simulationResult = simulateAction(context.clone(), player, gameAction);
             int id = AccionesTurnoMejorValor.ObtenerIDCarta(gameAction);
             if (id != 67 && id != 36 && id != 4 && id != 0 && Objects.equals(gameAction.getActionType().toString(), "PHYSICAL_ATTACK")) {
@@ -72,8 +71,9 @@ public class IA_MEJOR_VALOR extends Behaviour {
 
         //ENTRA EN EL IF SI LA MEJOR ACCION ES END_TURN
         if (bestAction.toString().contains("END_TURN")) {
-            AccionesPartidaMejorValor.obtenerMejorValorColumna(AccionesTurnoMejorValor.matrizTurno, AccionesTurnoMejorValor.idCartasTurno);
-            //AccionesPartida.mostrarTablaPartida();
+            AccionesPartidaMejorValor.obtenerMejorValorColumna(AccionesTurnoMejorValor.tablaTurno, AccionesTurnoMejorValor.idCartasTurno);
+            //vaciamos tablaTurno y idCartasTurno
+            AccionesTurnoMejorValor.vaciarIdsNumeroAccionesYTabla();
         }
         return bestAction;
     }

@@ -3,7 +3,7 @@ package net.demilich.metastone.game.behaviour;
 import java.util.ArrayList;
 
 public class AccionesPartidaMejorValor {
-    public static ArrayList<Integer> idCartasPartida = new ArrayList<Integer>(){{
+    public static ArrayList<Integer> idCartasPartida = new ArrayList<Integer>() {{
         add(5);
         add(6);
         add(7);
@@ -38,23 +38,23 @@ public class AccionesPartidaMejorValor {
     //con esto sigue los esbirros que se han jugado cuando cambian sus ids
     public static int[][] SeguimientoEsbirros = new int[2][60];
     public static int Turnos = 0;
-    public static Double[][] matrizPartida = new Double[200][30];
+    public static Double[][] tablaPartida = new Double[100][30];
 
     //metodo para obtener el mejor valor de cada columna de una tabla, ese valor se guardara en la tabla matriz partida
-    public static void obtenerMejorValorColumna(Double[][] matrizTurno, ArrayList<Integer> idCartasTurno ) {
+    public static void obtenerMejorValorColumna(Double[][] tablaTurno, ArrayList<Integer> idCartasTurno) {
         //ESTO ESTA ENTRANDO Y GUARDANDO -9999 EN ALGUNOS CASOS
         //recorremos la matriz de turno columna por columna
         for (int i = 0; i < idCartasTurno.size(); i++) {
             double mejorValor = -9999;
-            for (int j = 0; j < matrizTurno[i].length; j++) {
+            for (int j = 0; j < tablaTurno[i].length; j++) {
                 //si la matriz de turno en la columna i y fila j no es nula
-                if (matrizTurno[j][i] != null) {
+                if (tablaTurno[j][i] != null) {
                     //si el valor de la matriz de turno en la columna i y fila j es mayor al mejor valor
-                    if (matrizTurno[j][i] > mejorValor &&
-                        matrizTurno[j][i] != Float.NEGATIVE_INFINITY &&
-                        matrizTurno[j][i] != Float.POSITIVE_INFINITY ){
+                    if (tablaTurno[j][i] > mejorValor &&
+                            tablaTurno[j][i] != Float.NEGATIVE_INFINITY &&
+                            tablaTurno[j][i] != Float.POSITIVE_INFINITY) {
                         //el mejor valor sera el valor de la matriz de turno en la columna i y fila j
-                        mejorValor = matrizTurno[j][i].intValue();
+                        mejorValor = tablaTurno[j][i].intValue();
 
                     }
                 }
@@ -64,7 +64,7 @@ public class AccionesPartidaMejorValor {
             //buscamos el id idCartasPartida y guardamos la posicion en la que se encuentra
             for (int k = 0; k < idCartasPartida.size(); k++) {
                 if (id == idCartasPartida.get(k)) {
-                    matrizPartida[Turnos][k] = mejorValor;
+                    tablaPartida[Turnos][k] = mejorValor;
                 }
             }
 
@@ -92,7 +92,7 @@ public class AccionesPartidaMejorValor {
     }
 
     //metodo para mostrar la tabla de la partida
-    public static void mostrarTablaPartida(){
+    public static void mostrarTablaPartida() {
         //muestra primero el vector de los ids de las cartas
         for (int i = 0; i < idCartasPartida.size(); i++) {
             System.out.print(idCartasPartida.get(i) + " ");
@@ -100,14 +100,22 @@ public class AccionesPartidaMejorValor {
         System.out.println();
         for (int i = 0; i < 10; i++) {
             for (int j = 0; j < 30; j++) {
-                if (matrizPartida[i][j] != null){
-                    System.out.print(matrizPartida[i][j] + " ");
-                }
-                else {
+                if (tablaPartida[i][j] != null) {
+                    System.out.print(tablaPartida[i][j] + " ");
+                } else {
                     System.out.print("N ");
                 }
             }
             System.out.println();
         }
+    }
+    public static void InicioPartidaMejorValor(){
+        for (int i = 0; i < 100; i++) {
+            for (int j = 0; j < 30; j++) {
+                tablaPartida[i][j] = null;
+            }
+        }
+        Turnos = 0;
+
     }
 }

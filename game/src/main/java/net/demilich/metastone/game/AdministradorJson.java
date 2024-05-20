@@ -19,6 +19,9 @@ public class AdministradorJson {
     }
 
     public static void guardarDatos(List<Integer> numeros, int numeroSeparado, String rutaArchivo) {
+        if (numeroSeparado >= 10) {
+            numeroSeparado = 0;
+        }
         try {
             AdministradorJson administradorJson = new AdministradorJson(); // Crear una instancia
             DatosGuardados datos = new DatosGuardados(numeros, numeroSeparado);

@@ -137,10 +137,10 @@ public class GameContext implements Cloneable, IDisposable {
 		winner = logic.getWinner(getActivePlayer(), getOpponent(getActivePlayer()));
 		//comprueba si el algoritmo usado es PruebaIA
 		if (getActivePlayer().getBehaviour().getName().equals("IA_MEDIA") || getOpponent(getActivePlayer()).getBehaviour().getName().equals("IA_MEDIA")){
-			AdministradorJson.calculosFinalesMedia(AccionesPartidaMedia.matrizPartida, AccionesPartidaMedia.idCartasPartida);
+			AdministradorJson.calculosFinalesMedia(AccionesPartidaMedia.tablaPartida, AccionesPartidaMedia.idCartasPartida);
 		}
 		if (getActivePlayer().getBehaviour().getName().equals("IA_MEJOR_VALOR") || getOpponent(getActivePlayer()).getBehaviour().getName().equals("IA_MEJOR_VALOR")){
-			AdministradorJson.calculosFinalesMejorValor(AccionesPartidaMejorValor.matrizPartida, AccionesPartidaMejorValor.idCartasPartida);
+			AdministradorJson.calculosFinalesMejorValor(AccionesPartidaMejorValor.tablaPartida, AccionesPartidaMejorValor.idCartasPartida);
 		}
 		for (Player player : getPlayers()) {
 			player.getBehaviour().onGameOver(this, player.getId(), winner != null ? winner.getId() : -1);
@@ -457,6 +457,10 @@ public class GameContext implements Cloneable, IDisposable {
 
 	public void play() {
 		logger.debug("Game starts: " + getPlayer1().getName() + " VS. " + getPlayer2().getName());
+		AccionesPartidaMejorValor.InicioPartidaMejorValor();
+		AccionesPartidaMedia.InicioPartidaMedia();
+		//AccionesTurnoMedia.vaciarIdsNumeroAccionesYTabla();
+		//AccionesTurnoMejorValor.vaciarIdsNumeroAccionesYTabla();
 		init();
 		while (!gameDecided()) {
 			startTurn(activePlayer);
